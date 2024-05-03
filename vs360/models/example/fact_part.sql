@@ -14,6 +14,8 @@ with source_data as (
     select 1235 as id
     union all
     select null as id
+    union all
+    select 45 as id 
 
 )
 
