@@ -26,12 +26,3 @@ from source_data
 
 -- where id is not null
 
--- relou
-
--- bli bla bloug
-
-
---New test loooool
-
--test
--- relou
