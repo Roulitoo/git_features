@@ -16,6 +16,9 @@ with source_data as (
     select null as id
     union all
     select 45 as id 
+    union all 
+    select id_part, 
+           id_part_part
 
 )
 
