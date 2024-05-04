@@ -72,7 +72,7 @@ Pour cela utiliser la commande Git Fetch `<branch>` puis la commande git diff --
 
 Cela aura pour effet de lister les fichiers différents.
 
-> Différence Git Fetch & Git pull 
+> Différencegi Git Fetch & Git pull
 >
 > * **La commande git fetch** va récupérer toutes les données des commits effectués sur la branche courante qui n'existent pas encore dans votre version en local. Ces données seront stockées dans le répertoire de travail local mais ne seront pas fusionnées avec votre branche locale. Si vous souhaitez fusionner ces données pour que votre branche soit à jour, vous devez utiliser ensuite la commande git merge.
 > * **La commande git pull** est en fait la commande qui regroupe les commandes git fetch suivie de git merge. Cette commande télécharge les données des commits qui n'ont pas encore été récupérées dans votre branche locale puis fusionne ensuite ces données.
