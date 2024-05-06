@@ -10,3 +10,6 @@ Pourquoi ca ne pousse pas en dev ?
 
 
 On rajoute des choses pour tester le git diff avec dif main et dev
+
+
+Test de rajout avec le fetch
