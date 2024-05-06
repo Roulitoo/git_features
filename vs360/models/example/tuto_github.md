@@ -1,5 +1,20 @@
 # Comment utiliser Git pour le développement.
 
+## 00- Vocabulaire
+
+Local : Votre PC
+
+Remote : Serveur à distance
+
+Repo local : Stockage des opérations de git dans un .git
+
+Repo remote : Serveur Gitlab
+
+CI =  Chaine d'intégration continue
+
+CD : Chaine de développement continue
+
+Test unitaire : Test d'une partie précise d'une fonction
 
 ## 1- Créer sa issues(problématique)
 
@@ -9,7 +24,7 @@ Créer une issue sur Gitlab dans le projet Vision client 360 décrivant ce que v
 
 > Calcul de la notion d'un client crédit agricole
 >
-> ⚠️ ~~Développement table Partenaire~~ 
+> ⚠️ ~~Développement table Partenaire~~
 
 Lors de la création de votre issue merci de remplir les éléments suivants :
 
@@ -18,20 +33,15 @@ Lors de la création de votre issue merci de remplir les éléments suivants :
 - Assigner  à une personne
 - Une courte description
 
-
 <img src="https://lab.las3.de/gitlab/help/user/project/issues/img/issues_main_view_numbered.jpg" alt="Original Image" width="700" height="600">
 
-
-
-L'issue de se décompose en 
-
+L'issue de se décompose en
 
 ## 2- Créer sa branche de développement
 
 Il faut maintenant créer une branche de développement appellée **feature.**
 
 > La bonne pratique sera de le nommer **feature/<nom_issue>
-
 
 ![](https://buddy.works/blog/images/feature-branch.png)
 
@@ -48,8 +58,6 @@ git checkout feature/<nom_issue 52>
 ```
 
 ⚠️Pensez à vous placer sur la branche de dev et à télécharger les dernières maj avant de créer votre branche. Autrement votre prendre  branche ne repartira pas de la dernière version mise à jour.
-
-
 
 Alimenter successivement sa nouvelle branche.
 
@@ -70,10 +78,7 @@ Quand vous considérez que votre travail répond à l'issue créée auparavant v
 
 📖 Quand vous passerez en dev la pipeline CI/CD se déclenchera et si vous la validez votre code passera en Review.
 
-
 ⛔ Review en cours de formalisation
-
-
 
 Pour ce faire vous devez fusionner votre branche de travail avec la branche principale.
 
