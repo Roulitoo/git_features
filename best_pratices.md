@@ -43,16 +43,16 @@ models/stg
 │   ├── base
 │   │   ├── base_partenaire__customers.sql
 │   │   └── base_jaffle_shop__deleted_customers.sql
-│   ├── stg_jaffle_shop__customers.sql
-│   └── stg_jaffle_shop__orders.sql
+│   ├── stg_partenaire__informations_customer.sql
+│   └── stg_partenaire_revenus_customer.sql
 ├── applicatif contrat
-│    ├── _stripe__models.yml
-│    ├── _stripe__sources.yml
-│    └── stg_stripe__payments.sql
+│    ├── _contrat__models.yml
+│    ├── _contrat__sources.yml
+│    └── _contrat__payments.sql
 │── applicatif produit
-    ├── _stripe__models.yml
-    ├── _stripe__sources.yml
-    └── stg_stripe__payments.sql
+    ├── produit__models.yml
+    ├── produit__sources.yml
+    └── produit__referentiel_produit.sql
 
 ```
 
