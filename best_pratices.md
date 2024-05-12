@@ -36,7 +36,7 @@ Cette couche sera representée par un répertoire dans ``/models`` sous le nom d
 
 ```bash
 models/stg
-├── partenaire
+├── applicatif partenaire
 │   ├── _partenaire__docs.md
 │   ├── _partenaire__models.yml
 │   ├── _partenaire__sources.yml
@@ -45,11 +45,11 @@ models/stg
 │   │   └── base_jaffle_shop__deleted_customers.sql
 │   ├── stg_jaffle_shop__customers.sql
 │   └── stg_jaffle_shop__orders.sql
-├── Contrat
+├── applicatif contrat
 │    ├── _stripe__models.yml
 │    ├── _stripe__sources.yml
 │    └── stg_stripe__payments.sql
-│── produit
+│── applicatif produit
     ├── _stripe__models.yml
     ├── _stripe__sources.yml
     └── stg_stripe__payments.sql
@@ -156,6 +156,12 @@ Si votre modèle est simple et comporte peu de transformation vous pouvez réali
 A l'inverse si celui-ci comporte une opération relativement complexe, il vaut mieux l'isoler dans son propre .sql
 
 
-#### End user
+#### End user layer
 
 A constuire...
+
+
+
+#### YAML naming, convetion 
+
+A construire ...
