@@ -2,7 +2,6 @@
 
 Cette note de développement n'a pas de garantis dans le temps et évoluera avec les oritentations projets!
 
-
 ## Terminologie
 
 **Upstream** : Element en amont qui va être consommé par votre .sql
@@ -28,6 +27,8 @@ Leurs structures & conventions leurs son propres. On ne doit pas modifier leur s
 ### Staging Layer
 
 La couche de 'staging' est la fondation de votre modèle. Vous allez ramener les fondations des futures transformations que vous allez réaliser par la suite.
+
+Chaque bloc de staging doit vous permettre de construire les concepts métier sous-jacent.
 
 Cette couche sera representée par un répertoire dans ``/models`` sous le nom de stg.
 
@@ -93,8 +94,9 @@ source = Applicatif qui génére la donnée
 
 entity = nom explicite de ce que fait votre script
 
-
 #### Staging convention
+
+Voici la liste des opérations autorisées et non autorisées dans la phase de staging
 
 ✅ Renommer des colonnes
 
@@ -110,11 +112,50 @@ entity = nom explicite de ce que fait votre script
 
 ❌ Aggregation intedite (group by)
 
+La relation entre le staging et la RAW est 1:1.
+
+> Les tables raw n'étant pas maitrisées, on limite leur référence à partir de staging car elles peuvent évoluer. Ainsi l'adaptation du code se fera à un unique endroit dans stg.
+
+> 📝 Ces éléments seront vérifiés dans la CI/CD avant de pouvoir passer en DEV
+
+##### Base model
+
+Si une opération nécessite une jointure dans la phase de stagging vous pouvez la réaliser si et seulement si elle vous évite de vous répéter en downstream (DRY).
+
+Pour ce faire vous pouvez créer un subfolder `base` qui contiendra votre jointure avant d'étre appelé en DEV. La relation 1:1 est donc maintenue avec la couche **RAW**.
+
+Merci de le matérialisé en **VUE.**
+
+![img](https://assets-global.website-files.com/6064b31ff49a2d31e0493af1/620c0ab2dbace57dcb8025dd_OzjlBVkvjNKbMMAwkEeGL06-XTv-r_C72JzgDpY4m8H4zKWz8UT5Y8YVIdRTkm1DlSFUacaAW_fTB0KonOL3jgOocMN1dFcyUnkXEx3xomw4RWzhvlaDrkLNkiqA4itS0dfxuOAa.jpeg)
+
+## Intermediate Layer (business view)
+
+A partir de cette étape nous pouvons organiser les sous fichiers par concept métier (Conso, Epargne BAQ, Assurance, Web, Campagne).
+
+Cela permettra de faciliter la lecture et la documentation par groupe métier avec des données qui leur sont propre.
+
+#### Files names
+
+A ce niveau il y a tellement de transformation possible qu'il est impossible de normer totalement les noms de fichiers.
+
+Mais il faut esssayer d'être explicite au maximun et de pouvoir comprendre l'objectif du .sql sans l'ouvrir.
+
+Merci d'utiliser un verbe pour expliciter ce que vous faites dans le .sql
+
+✅ `[bv]_[entity]s__[verbe]s.sql`
+
+> Exemple, bv_aggregated_products_by_users , bv_joined_products_and_customers
+
+**Materialization à choisir ? A creuser**
+
+#### Un modèle ou plusieurs?
 
 
+Si votre modèle est simple et comporte peu de transformation vous pouvez réaliser de nombreuses jointures dans le .sql.
 
-```markdown
-:::tip Don’t Repeat Yourself.
-Staging models help us keep our code <Term id='dry'>DRY</Term>. dbt's modular, reusable structure means we can, and should, push any transformations that we’ll always want to use for a given component model as far upstream as possible. This saves us from potentially wasting code, complexity, and compute doing the same transformation more than once. For instance, if we know we always want our monetary values as floats in dollars, but the source system is integers and cents, we want to do the division and type casting as early as possible so that we can reference it rather than redo it repeatedly downstream.
-:::
-```
+A l'inverse si celui-ci comporte une opération relativement complexe, il vaut mieux l'isoler dans son propre .sql
+
+
+#### End user
+
+A constuire...
