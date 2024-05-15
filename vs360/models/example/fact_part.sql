@@ -19,6 +19,8 @@ with source_data as (
     union all 
     select id_part, 
            id_part_part
+    union all
+    select id_part, idpart_part
 
 )
 
