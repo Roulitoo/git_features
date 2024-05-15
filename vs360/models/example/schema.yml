@@ -23,3 +23,5 @@ models:
   description : "a good data"
     - table : "part"
       description : 'coucou hibou'
+  - name : "coucou les lokoum"
+   description : "test des olkmsqm n a pour jqisjn coucou hivsa"
