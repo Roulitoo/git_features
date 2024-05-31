@@ -7,9 +7,16 @@
     Try changing "table" to "view" below
 */
 
+-- decla var
+
 {{ config(materialized='table') }}
 
-with source_data as (
+With coucou as (
+    select test
+    from 1
+),
+
+source_data as (
 
     select 1235 as id
     union all
