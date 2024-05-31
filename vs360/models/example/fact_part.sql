@@ -15,12 +15,12 @@ with source_data as (
     union all
     select null as id
     union all
-    select 45 as id 
-    union all 
     select id_part, 
            id_part_part
     union all
     select id_part, idpart_part
+    union all 
+    select id_part , idpart,part
 
 )
 
