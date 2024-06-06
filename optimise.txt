@@ -1,121 +1,113 @@
-{{ config(materialized='table', schema='BV') }}
-
 WITH fact_part AS (
-    SELECT *
-
+    SELECT *,
+           row_number() OVER (ORDER BY apart_id) AS new_apart_id,
+           row_number() OVER (ORDER BY client_id) AS new_client_id,
+           row_number() OVER (ORDER BY agence_id) AS new_agence_id,
+           row_number() OVER (ORDER BY contrat_id) AS new_contrat_id,
+           row_number() OVER (ORDER BY produit_id) AS new_produit_id
     FROM {{ ref('fait_activite_part') }} 
-       
 ),
 
 dim_part AS (
-
-    SELECT * 
+    SELECT *,
+           row_number() OVER (ORDER BY client_id) AS new_client_id
     FROM {{ ref('dim_part')}}
 ),
 
 dim_contrat AS (
-
-    SELECT * 
+    SELECT *,
+           row_number() OVER (ORDER BY contrat_id) AS new_contrat_id
     FROM {{ ref('dim_contrat')}}
 ),
 
 dim_agence AS (
-
-    SELECT * 
+    SELECT *,
+           row_number() OVER (ORDER BY agence_id) AS new_agence_id
     FROM {{ ref('dim_agence')}}
 ),
 
 dim_produit AS (
-
-    SELECT * 
+    SELECT *,
+           row_number() OVER (ORDER BY produit_id) AS new_produit_id
     FROM {{ ref('dim_produit')}}
 )
 
 SELECT DISTINCT 
-	a.apart_id,
-       a.client_id,
-       a.agence_id,
-       a.contrat_id,
-       a.produit_id,
-       	b.type_de_gestion	,
-        b.profil_gestion_assu,		
-        b.profil_risque_mifid,		
-        b.canal_souscription,		
-        b.statut_contrat	,	
-        b.motif_resiliation	,	
-        b.promotion		,
-        b.remise		,
-        b.tarification_reelle,		
-        b.date_souscription,		
-        b.date_cloture as date_cloture_contrat	,	
-        b.date_effet,		
-        b.date_fin_contrat,
-	c.id_part,		
-	c.prenom,		
-	c.nom	,	
-	c.date_naissance	,	
-	c.sexe		,
-	c.adresse as adresse_part	,	
-	c.code_postal as code_postal_part	,	
-	c.ville as ville_part		,
-	c.departement		,
-	c.situation_familiale	,	
-	c.csp_longue		,
-	c.csp_reduite		,
-	c.type_status_residence		,
- 	c.type_logement		,
-	c.profession		,
-	c.origine_eer		,
-	c.revenu_domicilie		,
-	c.statut_fidelite		,
-	c.faux_client		,
-	c.note_bale		,
-	c.double_relation_part_pro	,	
-	c.actif		,
-	c.inactivite		,
-	c.interdit_bancaire		,
-	c.nir		,
-	c.societaire	,	
-	c.canal_eer		,
-	c.email		,
-	c.telephone		,
-	c.decede		,
-	c.note_dpe		,
-	c.npai		,
-	c.edoc_valide	,	
-	c.client_fragile	,	
-	c.optin_optout		,
-	c.charge		,
-	c.loyer		,
-	c.rfr		,
-	c.revenu_annuel,		
-	c.date_maj_profil,
-	c.date_maj_mail	,	
-	c.date_maj_tel	,	
-	c.date_maj_kyc	,	
-	c.date_eer		,
-	c.date_cloture	,	
-	c.valid_from	,	
-	c.valid_to		,
-	c.is_active	,
-		
-    d.id_dwr_eds,		
-    d.dr	,	
-    d.secteur,		
-    d.agence,		
-    d.adresse,		
-    d.code_postal,		
-    d.ville		,
-    d.grappe_agence		
-
-
-
-FROM fact_part AS a inner join dim_contrat AS b
-on (a.contrat_id = b.contrat_id)
-INNER JOIN dim_part AS c
-on (a.client_id = c.client_id)
-INNER JOIN dim_agence AS d
-on (a.agence_id = d.agence_id)
-
-
-
+    a.new_apart_id AS apart_id,
+    a.new_client_id AS client_id,
+    a.new_agence_id AS agence_id,
+    a.new_contrat_id AS contrat_id,
+    a.new_produit_id AS produit_id,
+    b.type_de_gestion,
+    b.profil_gestion_assu,
+    b.profil_risque_mifid,
+    b.canal_souscription,
+    b.statut_contrat,
+    b.motif_resiliation,
+    b.promotion,
+    b.remise,
+    b.tarification_reelle,
+    b.date_souscription,
+    b.date_cloture AS date_cloture_contrat,
+    b.date_effet,
+    b.date_fin_contrat,
+    c.id_part,
+    c.prenom,
+    c.nom,
+    c.date_naissance,
+    c.sexe,
+    c.adresse AS adresse_part,
+    c.code_postal AS code_postal_part,
+    c.ville AS ville_part,
+    c.departement,
+    c.situation_familiale,
+    c.csp_longue,
+    c.csp_reduite,
+    c.type_status_residence,
+    c.type_logement,
+    c.profession,
+    c.origine_eer,
+    c.revenu_domicilie,
+    c.statut_fidelite,
+    c.faux_client,
+    c.note_bale,
+    c.double_relation_part_pro,
+    c.actif,
+    c.inactivite,
+    c.interdit_bancaire,
+    c.nir,
+    c.societaire,
+    c.canal_eer,
+    c.email,
+    c.telephone,
+    c.decede,
+    c.note_dpe,
+    c.npai,
+    c.edoc_valide,
+    c.client_fragile,
+    c.optin_optout,
+    c.charge,
+    c.loyer,
+    c.rfr,
+    c.revenu_annuel,
+    c.date_maj_profil,
+    c.date_maj_mail,
+    c.date_maj_tel,
+    c.date_maj_kyc,
+    c.date_eer,
+    c.date_cloture,
+    c.valid_from,
+    c.valid_to,
+    c.is_active,
+    d.id_dwr_eds,
+    d.dr,
+    d.secteur,
+    d.agence,
+    d.adresse,
+    d.code_postal,
+    d.ville,
+    d.grappe_agence
+FROM fact_part AS a 
+INNER JOIN dim_contrat AS b ON (a.new_contrat_id = b.new_contrat_id)
+INNER JOIN dim_part AS c ON (a.new_client_id = c.new_client_id)
+INNER JOIN dim_agence AS d ON (a.new_agence_id = d.new_agence_id)
