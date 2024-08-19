@@ -1,3 +1,4 @@
+```sql
 -- Création de la table client_status (Table 1)
 CREATE TABLE client_status (
     id_part INT,
@@ -16,8 +17,11 @@ INSERT INTO client_status VALUES
 (2, 'NON', '2022-03-10', '2023-06-12'),
 (2, 'OUI', '2023-06-12', '9999-12-31'),
 (3, 'OUI', '2023-06-12', '9999-12-31');
+```
 
+--------------------------
 
+```sql
 -- Création de la table client_activity (Table 2)
 CREATE TABLE client_activity (
     id_part INT,
@@ -35,9 +39,12 @@ INSERT INTO client_activity VALUES
 (2, 0, '2015-03-10', '2022-03-10'),
 (2, 1, '2022-03-10', '9999-12-31'),
 (3, 0, '2021-06-10', '9999-12-31');
+```
+
+--------------
 
 
----------
+```sql
 -- Étape 1 : Créer une table temporaire pour combiner les périodes avec un FULL OUTER JOIN
 WITH combined_periods AS (
     SELECT
@@ -47,7 +54,7 @@ WITH combined_periods AS (
             WHEN t1.client = 'NON' THEN 0
             ELSE NULL
         END AS client,
-        t2.isactive,
+        COALESCE(t2.isactive, 0) AS isactive,
         GREATEST(COALESCE(t1.dd, '1900-01-01'), COALESCE(t2.dd, '1900-01-01')) AS dd,
         LEAST(COALESCE(t1.df, '9999-12-31'), COALESCE(t2.df, '9999-12-31')) AS df
     FROM
@@ -57,19 +64,19 @@ WITH combined_periods AS (
     ON
         t1.id_part = t2.id_part
     AND
-        t1.dd < t2.df
+        t1.dd <= t2.df
     AND
-        t1.df > t2.dd
+        t1.df >= t2.dd
 )
 
--- Étape 2 : Insertion des résultats dans la table finale
+-- Étape 2 : Insérer les résultats dans la table finale
 SELECT
     id_part,
-    client,
-    CASE 
-        WHEN client IS NULL AND isactive = 0 THEN 0
-        ELSE isactive
-    END AS isactive,
+    CASE
+        WHEN client IS NOT NULL THEN client
+        ELSE NULL
+    END AS client,
+    isactive,
     dd,
     df
 FROM
@@ -77,5 +84,4 @@ FROM
 ORDER BY
     id_part, dd;
 
-    id_part, dd;
-
+```
