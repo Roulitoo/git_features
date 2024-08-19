@@ -38,38 +38,44 @@ INSERT INTO client_activity VALUES
 
 
 ---------
-
--- Étape 1 : Créer une table temporaire pour combiner les périodes
+-- Étape 1 : Créer une table temporaire pour combiner les périodes avec un FULL OUTER JOIN
 WITH combined_periods AS (
     SELECT
-        t1.id_part,
-        t1.client,
+        COALESCE(t1.id_part, t2.id_part) AS id_part,
+        CASE
+            WHEN t1.client = 'OUI' THEN 1
+            WHEN t1.client = 'NON' THEN 0
+            ELSE NULL
+        END AS client,
         t2.isactive,
-        GREATEST(t1.dd, t2.dd) AS dd,
-        LEAST(t1.df, t2.df) AS df
+        GREATEST(COALESCE(t1.dd, '1900-01-01'), COALESCE(t2.dd, '1900-01-01')) AS dd,
+        LEAST(COALESCE(t1.df, '9999-12-31'), COALESCE(t2.df, '9999-12-31')) AS df
     FROM
         client_status t1
-    JOIN
+    FULL OUTER JOIN
         client_activity t2
     ON
         t1.id_part = t2.id_part
-    WHERE
-        t1.dd < t2.df AND t1.df > t2.dd
+    AND
+        t1.dd < t2.df
+    AND
+        t1.df > t2.dd
 )
 
--- Étape 2 : Insérer les résultats dans la table finale
-INSERT INTO table3 (id_part, client, isactive, dd, df)
+-- Étape 2 : Insertion des résultats dans la table finale
 SELECT
     id_part,
+    client,
     CASE 
-        WHEN client = 'OUI' THEN 1
-        WHEN client = 'NON' THEN 0
-    END AS client,
-    isactive,
+        WHEN client IS NULL AND isactive = 0 THEN 0
+        ELSE isactive
+    END AS isactive,
     dd,
     df
 FROM
     combined_periods
 ORDER BY
+    id_part, dd;
+
     id_part, dd;
 
