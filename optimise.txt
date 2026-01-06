@@ -1,113 +1,203 @@
-WITH fact_part AS (
-    SELECT *,
-           row_number() OVER (ORDER BY apart_id) AS new_apart_id,
-           row_number() OVER (ORDER BY client_id) AS new_client_id,
-           row_number() OVER (ORDER BY agence_id) AS new_agence_id,
-           row_number() OVER (ORDER BY contrat_id) AS new_contrat_id,
-           row_number() OVER (ORDER BY produit_id) AS new_produit_id
-    FROM {{ ref('fait_activite_part') }} 
-),
+ 3.3.2.3.3.7191000.4-1
+Jobs
+Stages
+Storage
+Environment
+Executors
+SQL / DataFrame
+classif_debiteur.py application UI
+Details for Query 1
+Submitted Time: 2026/01/06 12:03:33
+Duration: 12 min
+Running Jobs: 3 
+Succeeded Jobs: 1 2 
+ Show the Stage ID and Task ID that corresponds to the max metric
+WholeStageCodegen (5) duration: total (min, med, max )9.4 m (0 ms, 46.1 s, 5.6 m )
+WholeStageCodegen (3) duration: total (min, med, max )7.3 m (0 ms, 26.4 s, 5.2 m )
+WholeStageCodegen (1) duration: total (min, med, max )12.6 m (0 ms, 13.7 s, 22.6 s )
+WholeStageCodegen (4) duration: total (min, med, max )7.3 m (0 ms, 26.2 s, 5.2 m )
+WholeStageCodegen (2) duration: total (min, med, max )1.6 m (0 ms, 1.7 s, 7.5 s )
+Execute InsertIntoHadoopFsRelationCommand
 
-dim_part AS (
-    SELECT *,
-           row_number() OVER (ORDER BY client_id) AS new_client_id
-    FROM {{ ref('dim_part')}}
-),
+task commit time total (min, med, max )
+526 ms (0 ms, 86 ms, 105 ms )
 
-dim_contrat AS (
-    SELECT *,
-           row_number() OVER (ORDER BY contrat_id) AS new_contrat_id
-    FROM {{ ref('dim_contrat')}}
-),
+AdaptiveSparkPlan
 
-dim_agence AS (
-    SELECT *,
-           row_number() OVER (ORDER BY agence_id) AS new_agence_id
-    FROM {{ ref('dim_agence')}}
-),
+HashAggregate
 
-dim_produit AS (
-    SELECT *,
-           row_number() OVER (ORDER BY produit_id) AS new_produit_id
-    FROM {{ ref('dim_produit')}}
-)
+spill size total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+time in aggregation build total (min, med, max )
+7.9 m (0 ms, 31.9 s, 5.3 m )
+peak memory total (min, med, max )
+3.5 GiB (0.0 B, 608.0 MiB, 624.0 MiB )
+number of output rows: 17,070,478
+number of sort fallback tasks: 0
+avg hash probe bucket list iters (min, med, max ):
+(1.6, 1.6, 1.6 )
+HashAggregate
 
-SELECT DISTINCT 
-    a.new_apart_id AS apart_id,
-    a.new_client_id AS client_id,
-    a.new_agence_id AS agence_id,
-    a.new_contrat_id AS contrat_id,
-    a.new_produit_id AS produit_id,
-    b.type_de_gestion,
-    b.profil_gestion_assu,
-    b.profil_risque_mifid,
-    b.canal_souscription,
-    b.statut_contrat,
-    b.motif_resiliation,
-    b.promotion,
-    b.remise,
-    b.tarification_reelle,
-    b.date_souscription,
-    b.date_cloture AS date_cloture_contrat,
-    b.date_effet,
-    b.date_fin_contrat,
-    c.id_part,
-    c.prenom,
-    c.nom,
-    c.date_naissance,
-    c.sexe,
-    c.adresse AS adresse_part,
-    c.code_postal AS code_postal_part,
-    c.ville AS ville_part,
-    c.departement,
-    c.situation_familiale,
-    c.csp_longue,
-    c.csp_reduite,
-    c.type_status_residence,
-    c.type_logement,
-    c.profession,
-    c.origine_eer,
-    c.revenu_domicilie,
-    c.statut_fidelite,
-    c.faux_client,
-    c.note_bale,
-    c.double_relation_part_pro,
-    c.actif,
-    c.inactivite,
-    c.interdit_bancaire,
-    c.nir,
-    c.societaire,
-    c.canal_eer,
-    c.email,
-    c.telephone,
-    c.decede,
-    c.note_dpe,
-    c.npai,
-    c.edoc_valide,
-    c.client_fragile,
-    c.optin_optout,
-    c.charge,
-    c.loyer,
-    c.rfr,
-    c.revenu_annuel,
-    c.date_maj_profil,
-    c.date_maj_mail,
-    c.date_maj_tel,
-    c.date_maj_kyc,
-    c.date_eer,
-    c.date_cloture,
-    c.valid_from,
-    c.valid_to,
-    c.is_active,
-    d.id_dwr_eds,
-    d.dr,
-    d.secteur,
-    d.agence,
-    d.adresse,
-    d.code_postal,
-    d.ville,
-    d.grappe_agence
-FROM fact_part AS a 
-INNER JOIN dim_contrat AS b ON (a.new_contrat_id = b.new_contrat_id)
-INNER JOIN dim_part AS c ON (a.new_client_id = c.new_client_id)
-INNER JOIN dim_agence AS d ON (a.new_agence_id = d.new_agence_id)
+spill size total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+time in aggregation build total (min, med, max )
+7.7 m (0 ms, 30.0 s, 5.3 m )
+peak memory total (min, med, max )
+3.5 GiB (0.0 B, 608.0 MiB, 624.0 MiB )
+number of output rows: 17,070,478
+number of sort fallback tasks: 0
+avg hash probe bucket list iters (min, med, max ):
+(1.6, 1.6, 1.6 )
+HashAggregate
+
+spill size total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+time in aggregation build total (min, med, max )
+7.5 m (0 ms, 27.9 s, 5.2 m )
+peak memory total (min, med, max )
+3.6 GiB (0.0 B, 624.0 MiB, 640.0 MiB )
+number of output rows: 17,070,478
+number of sort fallback tasks: 0
+avg hash probe bucket list iters (min, med, max ):
+(1.6, 1.6, 1.6 )
+HashAggregate
+
+spill size total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+time in aggregation build total (min, med, max )
+7.3 m (0 ms, 25.6 s, 5.2 m )
+peak memory total (min, med, max )
+3.6 GiB (0.0 B, 624.0 MiB, 640.0 MiB )
+number of output rows: 17,070,478
+number of sort fallback tasks: 0
+avg hash probe bucket list iters (min, med, max ):
+(1.6, 1.6, 1.6 )
+
+Project
+
+SortMergeJoin
+
+number of output rows: 20,075,718
+spill size total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+number of matched pairs: 78,956,688
+Sort
+
+sort time total (min, med, max )
+32.2 s (3.0 s, 4.2 s, 4.7 s )
+peak memory total (min, med, max )
+4.4 GiB (448.0 MiB, 544.0 MiB, 832.0 MiB )
+spill size total (min, med, max )
+5.3 GiB (0.0 B, 0.0 B, 5.3 GiB )
+AQEShuffleRead
+
+number of partitions: 8
+partition data size total (min, med, max )
+2.5 GiB (55.0 MiB, 61.9 MiB, 2.1 GiB (driver))
+number of coalesced partitions: 7
+Exchange
+
+shuffle records written: 38,691,691
+shuffle write time total (min, med, max )
+14.7 s (0 ms, 278 ms, 453 ms )
+records read: 38,691,691
+local bytes read total (min, med, max )
+507.9 MiB (10.7 MiB, 12.1 MiB, 416.4 MiB )
+fetch wait time total (min, med, max )
+0 ms (0 ms, 0 ms, 0 ms )
+remote bytes read total (min, med, max )
+1974.5 MiB (36.7 MiB, 47.2 MiB, 1663.7 MiB )
+local blocks read: 90
+remote blocks read: 329
+data size total (min, med, max )
+8.6 GiB (0.0 B, 176.6 MiB, 177.5 MiB )
+number of partitions: 200
+remote bytes read to disk total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+shuffle bytes written total (min, med, max )
+2.4 GiB (0.0 B, 49.6 MiB, 49.9 MiB )
+
+Project
+
+
+Project
+
+
+Project
+
+
+Project
+
+
+Project
+
+Filter
+
+number of output rows: 38,691,691
+ColumnarToRow
+
+number of output rows: 65,851,379
+number of input batches: 16,200
+Scan parquet
+
+number of files read: 200
+scan time total (min, med, max )
+2.4 m (0 ms, 2.1 s, 6.6 s )
+metadata time total (min, med, max )
+8 ms (0 ms, 0 ms, 8 ms (driver))
+size of files read total (min, med, max )
+4.8 GiB (0.0 B, 0.0 B, 4.8 GiB (driver))
+number of output rows: 65,851,379
+Sort
+
+sort time total (min, med, max )
+1.1 s (6 ms, 19 ms, 928 ms )
+peak memory total (min, med, max )
+1346.8 MiB (16.3 MiB, 16.5 MiB, 1232.0 MiB )
+spill size total (min, med, max )
+2.3 GiB (0.0 B, 0.0 B, 2.3 GiB )
+AQEShuffleRead
+
+number of partitions: 8
+partition data size total (min, med, max )
+925.5 MiB (640.4 KiB, 951.3 KiB, 919.4 MiB (driver))
+number of coalesced partitions: 7
+Exchange
+
+shuffle records written: 18,697,081
+shuffle write time total (min, med, max )
+5.7 s (0 ms, 93 ms, 516 ms )
+records read: 18,697,081
+local bytes read total (min, med, max )
+70.4 MiB (60.5 KiB, 87.7 KiB, 70.1 MiB )
+fetch wait time total (min, med, max )
+0 ms (0 ms, 0 ms, 0 ms )
+remote bytes read total (min, med, max )
+811.8 MiB (548.2 KiB, 908.0 KiB, 806.3 MiB )
+local blocks read: 27
+remote blocks read: 373
+data size total (min, med, max )
+1785.0 MiB (0.0 B, 35.7 MiB, 35.9 MiB )
+number of partitions: 200
+remote bytes read to disk total (min, med, max )
+0.0 B (0.0 B, 0.0 B, 0.0 B )
+shuffle bytes written total (min, med, max )
+882.2 MiB (0.0 B, 17.6 MiB, 17.7 MiB )
+Filter
+
+number of output rows: 18,697,081
+ColumnarToRow
+
+number of output rows: 65,851,379
+number of input batches: 16,200
+Scan parquet
+
+number of files read: 200
+scan time total (min, med, max )
+1.1 m (0 ms, 1.0 s, 5.3 s )
+metadata time total (min, med, max )
+1 ms (0 ms, 0 ms, 1 ms (driver))
+size of files read total (min, med, max )
+4.8 GiB (0.0 B, 0.0 B, 4.8 GiB (driver))
+number of output rows: 65,851,379
+ Details
